@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import Item from './Item';
 import './styles/ShowProductsCopy.css'
+import Cookies from 'js-cookie'
 
 const url = "http://localhost:3001/productos"
 
 const ShowProductsCopy = () => {
   const [products, setProducts] = useState([])
   const [error, setError] = useState("")
+  const redirect = useNavigate()
 
   const getProducts = async () =>
   {
@@ -27,6 +29,10 @@ const ShowProductsCopy = () => {
   }
 
   useEffect(() => {
+    if (Cookies.get('usuario') === undefined) {
+      redirect('/')
+      return
+    }
     getProducts()
   }, [])
 

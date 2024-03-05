@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
       setError("Error de motor SQL: " + resdata)
     } else if (resdata === "OK") {
       Cookies.set('usuario', nombre);
-      redirect('/Home')
+      redirect('/Productos')
     } else {
       setError(resdata)
     }
