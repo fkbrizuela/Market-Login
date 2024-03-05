@@ -67,17 +67,17 @@ const EditProducts = () => {
 
   return (
       <div>
-      <h3 className="text-light">Editar producto</h3>
+      <h3>Editar producto</h3>
       <Item key={producto.id} product={producto} showOptions={false} />
         <p style={{color: "#ff0000"}}>{error}</p>
         <form onSubmit={update}>
-          <label htmlFor="" className="text-light">Nombre: </label>
+          <label htmlFor="">Nombre: </label>
           <input type="text" id='nombre' maxLength='80' className='form-control' required={true} value={nombre} onChange={(e) => setNombre(e.target.value)} />
-          <label htmlFor="" className="text-light">Precio: </label>
+          <label htmlFor="">Precio: </label>
           <input type="number" id='precio' className='form-control' step={0.1} required={true} value={precio} onChange={(e) => setPrecio(e.target.value)} />
-          <label htmlFor="" className="text-light">Stock: </label>
+          <label htmlFor="">Stock: </label>
           <input type="number" id='stock' className='form-control' step={0.1} required={true} value={stock} onChange={(e) => setStock(e.target.value)} />
-          <button className='btn btn-primary w-50 mt-3'>Guardar</button><Link to='/Productos' className='btn btn-outline-light border w-50 mt-3'>Volver</Link>
+          <button className='btn btn-success w-50 mt-3'>Guardar</button><Link to='/Productos' className='btn border w-50 mt-3'>Volver</Link>
         </form>
       </div>
   )

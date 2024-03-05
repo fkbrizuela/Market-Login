@@ -1,3 +1,4 @@
+
 // Personalización de colores
 
 $blue:    #0d6efd;
@@ -35,11 +36,12 @@ $dark:          $gray-900;
 @import '~bootstrap/scss/bootstrap.scss';
 
 body {
-  background-image: url('./img/lunaBackground.jpg');
-  background-color: #000;
+  background-image: url("./img/IMG-20230117-WA0062.jpg");
   background-position: center;
+  background-color: black;
   background-repeat: no-repeat;
 }
+
 .App {
   text-align: center;
 }

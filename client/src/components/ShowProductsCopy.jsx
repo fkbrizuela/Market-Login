@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Item from './Item';
 import './styles/ShowProductsCopy.css'
-import Cookies from 'js-cookie'
-
-const url = "http://localhost:3001/productos"
+import Cookies from 'js-cookie';
 
 const ShowProductsCopy = () => {
+  const url = "http://localhost:3001/productos"
+  const redirect = useNavigate()
   const [products, setProducts] = useState([])
   const [error, setError] = useState("")
-  const redirect = useNavigate()
 
   const getProducts = async () =>
   {
@@ -30,8 +29,8 @@ const ShowProductsCopy = () => {
 
   useEffect(() => {
     if (Cookies.get('usuario') === undefined) {
-      redirect('/')
-      return
+      redirect('/');
+      return;
     }
     getProducts()
   }, [])
@@ -67,11 +66,11 @@ const ShowProductsCopy = () => {
 
   return (
       <div>
-        <h2 className="text-light">Lista de productos</h2>
+        <h2>Lista de productos</h2>
         <p style={{color: "#ff0000"}}>{error}</p>
-        <Link to='/create' className='btn btn-outline-light w-100 btn-dark mb-3'>Añadir</Link>
+        <Link to='/create' className='btn btn-dark border w-100 mb-3'>Añadir</Link>
         <div className='container-fluid'>
-          {products.length > 0 ? products.map((product) => <Item key={product.id} product={product} DeleteProduct={DeleteProduct} showOptions={true} />) : <label>No hay ningún producto.</label>}
+          {products.length > 0 ? products.map((product) => <Item key={product.id} product={product} DeleteProduct={DeleteProduct} setError={setError} showOptions={true} />) : <label>No hay ningún producto.</label>}
         </div>
       </div>
   )

@@ -89,6 +89,62 @@ app.delete("/productos/", (req, res) => {
     });
 });
 
+app.get("/carrito/", (req, res) => {
+    const nombre = req.body.nombre
+
+    db.query("SELECT id FROM usuario WHERE nombre=?", [nombre], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
+
+        if (results.length != 0) {//result es un array de objetos unico en este caso
+            const usuarioid = results[0].id;
+
+            db.query("SELECT * FROM carrito WHERE idusuario=?", [usuarioid], (error, results, fields) => {
+                if (error) {
+                    res.status(500).json(error); // Error en motor SQL
+                    return;
+                }
+
+                res.json(results);
+            });
+        }
+    });
+});
+
+app.post("/agregarcarrito/", (req, res) => {
+    const nombre = req.body.nombre
+    const producto = req.body.producto
+    const cantidad = req.body.cantidad
+
+    db.query("SELECT id FROM usuario WHERE nombre=?", [nombre], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
+
+        if (results.length != 0) {//result es un array de objetos unico en este caso
+            const usuarioid = results[0].id;
+
+            db.query('INSERT INTO carrito (idusuario, idproducto, cantidad) VALUES (?, ?, ?)',[usuarioid, producto, cantidad], (error, results, fields) => {
+                if (error) {
+                    res.status(500).json(error); // Error en motor SQL
+                    return;
+                }
+
+                if (results.affectedRows !== 0) {
+                    res.send("OK")
+                } else {
+                    res.status(500).send("0 filas afectadas.")
+                }
+            });
+        } else {
+            res.status(401).send("Error de autorización: Usuario o contraseña incorrectos.");
+        }
+    });
+});
+
 app.post("/nuevo_usuario", (req, res) => {
     const nombre = req.body.nombre;
     const contraseña = req.body.contraseña;
