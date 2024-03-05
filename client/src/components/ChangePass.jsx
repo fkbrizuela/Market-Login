@@ -6,7 +6,7 @@ const ChangePass = () => {
   const [contraseñaActual, setContraseñaActual] = useState("")
   const [contraseñaNueva, setContraseñaNueva] = useState("")
   const [confirmaContraseña, setConfirmaContraseña] = useState("")
-  const [error, setError] = useState(0)
+  const [error, setError] = useState("")
   const url = "http://localhost:3001/cambio_contrasena"
   const redirect = useNavigate()
 
@@ -15,25 +15,6 @@ const handleSubmit = async (e) => {
 
   const usuario = Cookies.get("usuario");
 
-  if (usuario === null) {
-    setError(4)
-  }
-
-  if (contraseñaActual === null || contraseñaNueva === null) {
-    setError(2)
-    return
-  }
-
-  if (contraseñaActual.trim().length === 0 || contraseñaNueva.trim().length === 0) {
-    setError(2)
-    return
-  }
-
-  if (contraseñaNueva !== confirmaContraseña) {
-    setError(3)
-    return;
-  }
-
   const data = {
     nombre: usuario,
     contraseña_actual: contraseñaActual,
@@ -41,43 +22,27 @@ const handleSubmit = async (e) => {
     confirma_contraseña: confirmaContraseña
   }
 
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
+  try {
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
 
-  if (response === null) {
-    setError(-1)
-    return
-  }
+    const resdata = await response.text();
 
-  const resdata = await response.json();
-
-  if (resdata.message === "ok") {
-    setError(1)
-    redirect('/Home')
-  } else {
-    setError(3)
-  }
-}
-
-const errorSwitch = () => {
-  switch(error) {
-    case 0:
-      return <p> </p>
-    case 1:
-      return <p className="text-align-center"> bienvenido</p>
-    case 2:
-      return <p> Todos los campos son obligatorios</p>
-    case 3:
-      return <p> Las contraseñas no coinciden</p>
-    case 4:
-      return <p> No está iniciado sesión</p>
-    default:
-      return <p> Error desconocido o de red</p>;
+    if (response.status === 500) {// reviso el estado http de la respuesta
+      setError("Error de motor SQL: " + resdata)
+    } else if (resdata === "OK") {
+      Cookies.remove('usuario');
+      redirect('/')
+    } else {
+      setError(resdata)
+    }
+  } catch (ex) {// captura especificamente el caso de que falle el fetch
+    setError("Error de fetch: " + ex + " Puede que el backend se haya crasheado, no esté abierto, o haya un problema de CORS.")
   }
 }
 
@@ -86,6 +51,7 @@ const errorSwitch = () => {
     <div className='bg-white p-3 rounded w-25'>
       <h2>Cambio de contraseña</h2>
       <form onSubmit={handleSubmit}>
+        <p style={{color: "#ff0000"}}>{error}</p>
         <div className="mb-3">
           <label htmlFor="password"><strong>Contraseña actual</strong></label>
           <input type="password" placeholder="Contraseña actual" className="form-control rounded-0" value={contraseñaActual}
@@ -107,7 +73,6 @@ const errorSwitch = () => {
         <button className="btn btn-success w-100 rounded-0 mb-4"><strong>Cambiar</strong></button>
       </form>
       <Link to='/' className='btn btn-default border w-100 bg-light rounded-0'>Volver</Link>
-      {errorSwitch()} 
     </div>
   </div>
   )

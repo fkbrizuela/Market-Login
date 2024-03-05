@@ -117,7 +117,7 @@ app.post("/nuevo_usuario", (req, res) => {
         if (results.affectedRows !== 0) {
             res.send("OK")
         } else {
-            res.status(500).send("Error del servidor: No se pudo agregar usuario a la DB.")
+            res.status(500).send("Error del servidor: No se pudo agregar usuario a la DB.")//se puede quitar la validación
         }
     })
 });
@@ -164,7 +164,8 @@ app.post("/cambio_contrasena", (req, res) => {
         res.status(400).send("Error de mala solicitud: contraseña y confirma_contraseña no coinciden.");
         return;
     }
-
+//query solicitar  
+//hago una reautenticación para validar la contraseña actual 
     db.query('SELECT * FROM usuario WHERE nombre=? AND contraseña=?', [nombre, contraseña_actual], (error, results, fields) => {
         if (error) {
             res.status(500).json(error); // Error en motor SQL
@@ -178,10 +179,9 @@ app.post("/cambio_contrasena", (req, res) => {
 
         db.query('UPDATE usuario SET contraseña=? WHERE nombre=?', [contraseña_nueva, nombre], (error, results, fields) => {
             if (error) {
-                res.status(500).json(error); // Error en motor SQL
+                res.status(500).json(error); // Error en motor SQL lo combierte a un string en formato json
                 return;
             }
-
             if (results.affectedRows !== 0) {
                 res.send("OK")
             } else {
