@@ -19,14 +19,14 @@ function NavScroll() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary vw-100 mb-4">
       <Container fluid>
-        <Navbar.Brand as = {Link} to="/">ASTROMarket</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">ASTROMarket</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
             className="me-auto my-2 my-lg-0"
             style={{ maxHeight: "100px" }}
             navbarScroll>
-            <Nav.Link as = {Link}  to="/Productos">Productos</Nav.Link>
+            <Nav.Link as={Link} to="/Productos">Productos</Nav.Link>
           </Nav>
           <Form className="d-flex">
             <Button variant="outline-light">Buscar</Button>

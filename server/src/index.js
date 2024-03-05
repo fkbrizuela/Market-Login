@@ -90,7 +90,7 @@ app.delete("/productos/", (req, res) => {
 });
 
 app.get("/carrito/", (req, res) => {
-    const nombre = req.body.nombre
+    const nombre = req.query.nombre
 
     db.query("SELECT id FROM usuario WHERE nombre=?", [nombre], (error, results, fields) => {
         if (error) {
