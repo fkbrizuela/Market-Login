@@ -57,7 +57,7 @@ const EditProducts = () => {
       if (response.status === 500)
         setError("Error de motor SQL: " + resdata)
       else if (resdata === "OK")
-        redirect('/Home')
+        redirect('/Productos')
       else
         setError(resdata)
     } catch (ex) {
@@ -66,22 +66,20 @@ const EditProducts = () => {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center bg-primary vh-100">
-      <div className='bg-white p-3 rounded my-auto'>
-      <h3>Editar producto</h3>
+      <div>
+      <h3 className="text-light">Editar producto</h3>
       <Item key={producto.id} product={producto} showOptions={false} />
         <p style={{color: "#ff0000"}}>{error}</p>
         <form onSubmit={update}>
-          <label htmlFor="">Nombre: </label>
+          <label htmlFor="" className="text-light">Nombre: </label>
           <input type="text" id='nombre' maxLength='80' className='form-control' required={true} value={nombre} onChange={(e) => setNombre(e.target.value)} />
-          <label htmlFor="">Precio: </label>
+          <label htmlFor="" className="text-light">Precio: </label>
           <input type="number" id='precio' className='form-control' step={0.1} required={true} value={precio} onChange={(e) => setPrecio(e.target.value)} />
-          <label htmlFor="">Stock: </label>
+          <label htmlFor="" className="text-light">Stock: </label>
           <input type="number" id='stock' className='form-control' step={0.1} required={true} value={stock} onChange={(e) => setStock(e.target.value)} />
-          <button className='btn btn-success w-50 mt-3'>Guardar</button><Link to='/Home' className='btn border w-50 mt-3'>Volver</Link>
+          <button className='btn btn-primary w-50 mt-3'>Guardar</button><Link to='/Productos' className='btn btn-outline-light border w-50 mt-3'>Volver</Link>
         </form>
       </div>
-    </div>
   )
 }
 export default EditProducts

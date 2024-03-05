@@ -66,16 +66,14 @@ const ShowProductsCopy = () => {
   }
 
   return (
-    <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
-      <div className='bg-white p-3 rounded my-auto'>
-        <h2>Lista de productos</h2>
+      <div>
+        <h2 className="text-light">Lista de productos</h2>
         <p style={{color: "#ff0000"}}>{error}</p>
-        <Link to='/create' className='btn w-100 btn-dark mb-3'>Añadir</Link>
+        <Link to='/create' className='btn btn-outline-light w-100 btn-dark mb-3'>Añadir</Link>
         <div className='container-fluid'>
           {products.length > 0 ? products.map((product) => <Item key={product.id} product={product} DeleteProduct={DeleteProduct} showOptions={true} />) : <label>No hay ningún producto.</label>}
         </div>
       </div>
-    </div>
   )
 }
 export default ShowProductsCopy

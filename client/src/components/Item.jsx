@@ -18,6 +18,7 @@ const Item = ({ product, DeleteProduct, showOptions }) => {
                 <Card.Body>
                     <Link to={`/edit/${product.id}`} className="btn w-50 btn-primary">Editar</Link>
                     <button onClick={() =>  DeleteProduct(product.id) } className='btn w-50 btn-danger' >Eliminar</button>
+                    
                 </Card.Body>
              : false}
         </Card>

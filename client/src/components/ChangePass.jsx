@@ -47,34 +47,32 @@ const handleSubmit = async (e) => {
 }
 
   return (
-    <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
-    <div className='bg-white p-3 rounded w-25'>
-      <h2>Cambio de contraseña</h2>
+    <div>
+      <h2 className="text-light">Cambio de contraseña</h2>
       <form onSubmit={handleSubmit}>
         <p style={{color: "#ff0000"}}>{error}</p>
         <div className="mb-3">
-          <label htmlFor="password"><strong>Contraseña actual</strong></label>
+          <label htmlFor="password" className="text-light"><strong>Contraseña actual</strong></label>
           <input type="password" placeholder="Contraseña actual" className="form-control rounded-0" value={contraseñaActual}
             onChange={e=>setContraseñaActual(e.target.value)}
             />
         </div>
         <div className="mb-3">
-          <label htmlFor="password"><strong>Contraseña nueva</strong></label>
+          <label htmlFor="password" className="text-light"><strong>Contraseña nueva</strong></label>
           <input type="password" placeholder="Contraseña nueva" className="form-control rounded-0" value={contraseñaNueva}
             onChange={e=>setContraseñaNueva(e.target.value)}
             />
         </div>
         <div className="mb-3">
-          <label htmlFor="password"><strong>Confirma contraseña</strong></label>
+          <label htmlFor="password" className="text-light"><strong>Confirma contraseña</strong></label>
           <input type="password" placeholder="Confirma contraseña" className="form-control rounded-0" value={confirmaContraseña}
             onChange={e=>setConfirmaContraseña(e.target.value)}
             />
         </div>
         <button className="btn btn-success w-100 rounded-0 mb-4"><strong>Cambiar</strong></button>
       </form>
-      <Link to='/' className='btn btn-default border w-100 bg-light rounded-0'>Volver</Link>
+      <Link to='/' className='btn btn-dark border w-100 rounded-0'>Volver</Link>
     </div>
-  </div>
   )
 }
 export default ChangePass

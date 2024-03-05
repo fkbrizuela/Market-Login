@@ -3,8 +3,6 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import CartWidget from "./CartWidget";
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 
@@ -18,7 +16,7 @@ function NavScroll() {
 
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-tertiary vw-100 mb-4">
       <Container fluid>
         <Navbar.Brand as={Link} to="/">ASTROMarket</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
@@ -39,7 +37,11 @@ function NavScroll() {
               aria-label="Search"
             />
           </Form>
-          <CartWidget />
+          <Link to="/Cart">
+            <Button variant="outline-light">
+              <i className="bi bi-box"></i> Box
+            </Button>
+          </Link>
           <Button variant="outline-danger" onClick={cerrarSesion}>Cerrar sesión</Button>
         </Navbar.Collapse>
       </Container>
