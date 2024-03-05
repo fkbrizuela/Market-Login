@@ -43,26 +43,26 @@ const handleSubmit = async (e) => {
   
   return (
       <div>
-      <h2 className="text-light">Ingresar</h2>
+        <h2>Ingresar</h2>
         <form onSubmit={handleSubmit}>
           <p style={{color: "#ff0000"}}>{error}</p>
           <div className="mb-3">
-            <label htmlFor="nombre" className="text-light"><strong>Nombre:</strong></label>
-            <input type="text" placeholder="Ingresar Nombre" name="nombre" className="form-control rounded-0" value={nombre}
+            <label htmlFor="nombre"><strong>Nombre:</strong></label>
+            <input type="text" placeholder="Ingresar Nombre" name="nombre" className="form-control" value={nombre}
             onChange={e=>setNombre(e.target.value)}
-            />
+              />
           </div>
           <div className="mb-3">
-            <label htmlFor="password" className="text-light"><strong>Contraseña</strong></label>
-            <input type="password" placeholder="Contraseña" name='password' className="form-control rounded-0" value={contraseña}
+            <label htmlFor="password"><strong>Contraseña</strong></label>
+            <input type="password" placeholder="Contraseña" name='password' className="form-control" value={contraseña}
             onChange={e=>setContraseña(e.target.value)}
             />
           </div>
-          <p className="text-light">Usted está de acuerdo con nuestros términos y condiciones</p>
-          <button type="submit" className="btn btn-success w-100 rounded-0 mb-3">Login</button>
+          <p>Usted está de acuerdo con nuestros términos y condiciones</p>
+          <button type="submit" className="btn btn-success w-100 mb-3">Login</button>
         </form>
-        <Link to='/signup' className='btn btn-dark border w-100 rounded-0 mb-3'>Crear Cuenta</Link>
-        <Link to='/ChangePass' className='btn btn-dark border w-100 rounded-0 mb-1'>Cambio Contraseña</Link>
+        <Link to='/signup' className='btn btn-dark border w-100 mb-3'>Crear Cuenta</Link>
+        <Link to='/ChangePass' className='btn btn-dark border w-100 mb-1'>Cambio Contraseña</Link>
       </div>
   );
 };

@@ -45,31 +45,31 @@ const handleSubmit = async (e) => {
 
   return (
     <div>
-      <h2 className="text-light">Crear cuenta</h2>
+      <h2>Crear cuenta</h2>
       <form onSubmit={handleSubmit}>
         <p style={{color: "#ff0000"}}>{error}</p>
         <div className="mb-3">
-          <label htmlFor="nombre" className="text-light"><strong>Nombre</strong></label>
+          <label htmlFor="nombre"><strong>Nombre</strong></label>
           <input type="text" placeholder="Ingresar Nombre" className="form-control rounded-0" value={nombre}
             onChange={e=>setNombre(e.target.value)}
             />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="text-light"><strong>Contraseña</strong></label>
+          <label htmlFor="password"><strong>Contraseña</strong></label>
           <input type="password" placeholder="Contraseña" className="form-control rounded-0" value={contraseña}
             onChange={e=>setContraseña(e.target.value)}
             />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="text-light"><strong>Confirma contraseña</strong></label>
+          <label htmlFor="password"><strong>Confirma contraseña</strong></label>
           <input type="password" placeholder="Confirma contraseña" className="form-control rounded-0" value={confirmaContraseña}
             onChange={e=>setConfirmaContraseña(e.target.value)}
             />
         </div>
         <button className="btn btn-success w-100 rounded-0"><strong>Crear</strong></button>
       </form>
-      <p className="text-light">Usted de acuerdo con nuestros términos y condiciones</p>
-      <Link to='/' className='btn btn-dark border w-100 rounded-0'>Login</Link>
+      <p>Usted de acuerdo con nuestros términos y condiciones</p>
+      <Link to='/' className='btn btn-dark border w-100 rounded-0'>Volver</Link>
     </div>
   )
 }
