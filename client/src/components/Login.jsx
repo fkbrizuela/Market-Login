@@ -28,7 +28,7 @@ const handleSubmit = async (e) => {
 
     const resdata = await response.text();
 
-    if (response.status === 500) {
+    if (response.status === 500) {// reviso el estado http de la respuesta
       setError("Error de motor SQL: " + resdata)
     } else if (resdata === "OK") {
       Cookies.set('usuario', nombre);
@@ -36,7 +36,7 @@ const handleSubmit = async (e) => {
     } else {
       setError(resdata)
     }
-  } catch (ex) {
+  } catch (ex) {// captura especificamente el caso de que falle el fetch
     setError("Error de fetch: " + ex + " Puede que el backend se haya crasheado, no esté abierto, o haya un problema de CORS.")
   }
 }

@@ -8,9 +8,9 @@ app.use(cors())
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "admin",
+    user: "root",
     password: "admin",
-    database: "test"
+    database: "test2"
 })
 
 db.connect(function(err) {
@@ -135,8 +135,8 @@ app.post("/autenticar", (req, res) => {
         if (error) {
             res.status(500).json(error); // Error en motor SQL
             return;
-        }
-        if (results.length != 0) {
+        }//la base de datos devuele una lista de usuarios que coinciden con estos criterios
+        if (results.length != 0) {//result es un array de objetos unico en este caso
             res.send("OK")
         } else {
             res.status(401).send("Error de autorización: Usuario o contraseña incorrectos.");
