@@ -1,0 +1,5 @@
+.container-fluid {
+    display: flex;
+    grid-gap: 1em;
+    flex-wrap: wrap;
+}

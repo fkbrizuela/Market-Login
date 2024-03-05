@@ -8,12 +8,86 @@ app.use(cors())
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "root",
+    user: "admin",
     password: "admin",
-    database: "test2"
+    database: "test"
 })
 
-db.connect()
+db.connect(function(err) {
+  if (err) throw err;
+  console.log("Conectado a DB!");
+})
+
+app.get("/productos/", (req, res) => {
+    db.query("SELECT * FROM producto", (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
+        res.json(results);
+    });
+});
+
+app.get("/productos/:id", (req, res) => {
+    const id = req.body.id;
+    db.query("SELECT * FROM producto WHERE id=?", [id], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
+        res.json(results);
+    });
+});
+
+app.put("/productos/", (req, res) => {
+    const nombre = req.body.nombre;
+    const stock = req.body.stock;
+    const precio = req.body.precio;
+    db.query("INSERT INTO producto(nombre, stock, precio) VALUES(?, ?, ?)", [nombre, stock, precio], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
+        if (results.affectedRows !== 0) {
+            res.send("OK")
+        } else {
+            res.status(500).send("0 filas afectadas.")
+        }
+    });
+});
+
+app.post("/productos/", (req, res) => {
+    const nombre = req.body.nombre;
+    const stock = req.body.stock;
+    const precio = req.body.precio;
+    const id = req.body.id;
+    db.query("UPDATE producto SET nombre=?, stock=?, precio=? WHERE id=?", [nombre, stock, precio, id], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
+        if (results.affectedRows !== 0) {
+            res.send("OK")
+        } else {
+            res.status(500).send("0 filas afectadas.")
+        }
+    });
+});
+
+app.delete("/productos/", (req, res) => {
+    const id = req.body.id;
+    db.query("DELETE FROM producto WHERE id=?", [id], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
+        if (results.affectedRows !== 0) {
+            res.send("OK")
+        } else {
+            res.status(500).send("0 filas afectadas.")
+        }
+    });
+});
 
 app.post("/nuevo_usuario", (req, res) => {
     const nombre = req.body.nombre;
@@ -21,25 +95,29 @@ app.post("/nuevo_usuario", (req, res) => {
     const confirma_contraseña = req.body.confirma_contraseña;
 
     if (nombre === null || contraseña === null || confirma_contraseña === null) {
-        res.json({ message: "FALLO" });
+        res.status(400).send("Error de mala solicitud: nombre, contraseña o confirma_contraseña no están definidos.");
         return;
     }
 
     if (nombre.trim().length === 0 || contraseña.trim().length === 0) {
-        res.json({ message: "FALLO" });
+        res.status(400).send("Error de mala solicitud: nombre o contraseña vacíos.");
         return;
     }
 
     if (contraseña !== confirma_contraseña) {
-        res.json({ message: "FALLO" });
+        res.status(400).send("Error de mala solicitud: contraseña y confirma_contraseña no coinciden.")
         return;
     }
 
-    db.query('INSERT INTO usuario (`nombre`, `contraseña`) VALUES ("?", "?")',[nombre, contraseña], (error, results, fields) => {
+    db.query("INSERT INTO usuario (nombre, contraseña) VALUES (?, ?)", [nombre, contraseña], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
         if (results.affectedRows !== 0) {
-            res.json({ message: "ok" })
+            res.send("OK")
         } else {
-            res.json({ message: "FALLO" })
+            res.status(500).send("Error del servidor: No se pudo agregar usuario a la DB.")
         }
     })
 });
@@ -49,15 +127,19 @@ app.post("/autenticar", (req, res) => {
     const contraseña = req.body.contraseña;
 
     if (nombre === null || contraseña === null) {
-        res.json({ message: "FALLO" });
+        res.status(400).send("Error de mala solicitud: nombre o contraseña no están definidos.");
         return;
     }
 
-    db.query('SELECT * FROM usuario WHERE nombre="?" AND contraseña="?"',[nombre, contraseña], (error, results, fields) => {
+    db.query("SELECT * FROM usuario WHERE nombre=? AND contraseña=?", [nombre, contraseña], (error, results, fields) => {
+        if (error) {
+            res.status(500).json(error); // Error en motor SQL
+            return;
+        }
         if (results.length != 0) {
-            res.json({ message: "ok" })
+            res.send("OK")
         } else {
-            res.json({ message: "FALLO" })
+            res.status(401).send("Error de autorización: Usuario o contraseña incorrectos.");
         }
     })
 });
@@ -69,38 +151,42 @@ app.post("/cambio_contrasena", (req, res) => {
     const confirma_contraseña = req.body.confirma_contraseña;
 
     if (nombre === null || contraseña_actual === null || confirma_contraseña === null) {
-        res.json({ message: "FALLO" });
+        res.status(400).send("Error de mala solicitud: nombre, contraseña o confirma_contraseña no están definidos.");
         return;
     }
 
     if (nombre.trim().length === 0 || contraseña_actual.trim().length === 0) {
-        res.json({ message: "FALLO" });
+        res.status(400).send("Error de mala solicitud: nombre o contraseña vacíos.");
         return;
     }
 
     if (contraseña_nueva !== confirma_contraseña) {
-        res.json({ message: "FALLO" });
+        res.status(400).send("Error de mala solicitud: contraseña y confirma_contraseña no coinciden.");
         return;
     }
 
-    db.query('SELECT * FROM usuario WHERE nombre="?" AND contraseña="?"',[nombre, contraseña_actual], (error, results, fields) => {
+    db.query('SELECT * FROM usuario WHERE nombre=? AND contraseña=?', [nombre, contraseña_actual], (error, results, fields) => {
         if (error) {
-            res.json(error);
+            res.status(500).json(error); // Error en motor SQL
             return;
         }
 
         if (results.length == 0) {
-            res.json({ message: "FALLO" });
+            res.status(401).send("Error de autorización: Usuario o contraseña incorrectos.");
             return;
         }
 
-        db.query('UPDATE usuario SET contraseña="?" WHERE nombre="?"',[contraseña_nueva, nombre], (error, results, fields) => {
+        db.query('UPDATE usuario SET contraseña=? WHERE nombre=?', [contraseña_nueva, nombre], (error, results, fields) => {
             if (error) {
-                res.json(error);
+                res.status(500).json(error); // Error en motor SQL
                 return;
             }
 
-            res.json({ message: "ok" })
+            if (results.affectedRows !== 0) {
+                res.send("OK")
+            } else {
+                res.status(500).send("0 filas afectadas.")
+            }
         });
     });
 });
